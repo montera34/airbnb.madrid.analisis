@@ -23,6 +23,7 @@ db1 <- "InsideAirbnb"
 listings_simple_2 <- read.delim("../data/datahippo_airbnb_apartments_madrid_180418.csv",sep = ",")
 db2 <- "Datahippo"
 
+# removes "airbnb" from id
 listings_simple_2$id <-  sub("airbnb", "", listings_simple_2$id )
 ```
 
@@ -73,9 +74,9 @@ unique_listings <- as.data.frame(unique(unique_listings_p$id))
 
 A. `r db1` y `r db2` tienen **`r nrow(db1_in_2)`** anuncios comunes.
 
-B. La `r db1` tiene **`r nrow(db1_not_in_2)`** anuncios que no están en la DB2.
+B. La `r db1` tiene **`r nrow(db1_not_in_2)`** anuncios que no están en la `r db2`.
 
-C. La `r db2` tiene **`r nrow(db2_not_in_1)`** anuncios que no están en la DB1.
+C. La `r db2` tiene **`r nrow(db2_not_in_1)`** anuncios que no están en la `r db1`.
 
 Hay, por tanto **`r nrow(db1_not_in_2) + nrow(db2_not_in_1) + nrow(db2_in_1)` anuncios ** (A + B + C) diferentes en total entre las dos bases de datos. Que concuerda con el valor `r nrow(unique_listings)`, que son el número de valores de id únicos entre DB1 y DB2.
 
@@ -122,44 +123,44 @@ qmplot(longitude, latitude, data = db2_not_in_1, maptype = "toner-lite", color =
 ### InsideAirbnb
 
 + InsideAirbnb.com de Madrid
-
 + Fecha scraping: 2018-01-17
-
-El subset de datos de Donosti (https://github.com/montera34/airbnbeuskadi/blob/master/data/listings_donostia_simple.csv) se ha realizado con el script de R (https://github.com/montera34/airbnbeuskadi/blob/master/prepare-segmented-files.R) a partir de datos limpiados con openrefine para los nombres de los municipios.
 
 ### Datahippo
 
 + Datahippo.org
-
 + Fecha scraping: 2018-04-18
 
 ```{r, echo = FALSE, warning=FALSE}
 
 # Merge datasets
 # Select columns that are common in both in the same order
-# db1_in_2_simple <- db1_in_2[,c(1,38,39,49,43,42,11,13)]
-# db1_not_in_2_simple <- db1_not_in_2[,c(1,38,39,49,43,42,11,13)]
-# db2_not_in_1_simple <- db2_not_in_1[,c(3,5,6,8,9,10,14,15)]
+db1_in_2_simple <- db1_in_2[,c(1,49,50,61,54,53,20)]
+db1_not_in_2_simple <- db1_not_in_2[,c(1,49,50,61,54,53,20)]
+db2_not_in_1_simple <- db2_not_in_1[,c(1,3,4,13,10,8,7)]
 
 # change name of variables in DB2
-# names(db2_not_in_1_simple)<-c("id","latitude","longitude","price","accommodates","room_type","host_id","host_name")
-# 
-# db1_in_2_simple$price <- as.numeric(as.character(db1_in_2_simple$price))
-# db1_not_in_2_simple$price <- as.numeric(as.character(db1_not_in_2_simple$price))
-# db2_not_in_1_simple$price <- as.numeric(as.character(db2_not_in_1_simple$price))
-#   
-#   
-# temp <- rbind(db1_in_2_simple,db1_not_in_2_simple)
-# temp$price  <- as.integer(temp$price)
-# # Merge datasets
-# complete_dataset <- rbind(temp,db2_not_in_1_simple)
-# 
-# # Converts to character, uniform name of values, convert to fator again
-# complete_dataset$room_type <- as.character(complete_dataset$room_type)
-# complete_dataset$room_type[complete_dataset$room_type == "private_room"] <- "Private Room"
-# complete_dataset$room_type[complete_dataset$room_type == "entire_home"] <- "Entire home/apt"
-# complete_dataset$room_type <- as.factor(complete_dataset$room_type)
-# # levels(complete_dataset$room_type)
-# 
-# write.table(complete_dataset, "../../data/listings_madrid_merged.csv", sep=",", row.names=FALSE)
+names(db2_not_in_1_simple)<-c("id","latitude","longitude","price","accommodates","room_type","host_id")
+
+# removes $ sign from price
+db1_in_2_simple$price <-sub("\\$", "", db1_in_2_simple$price )
+
+db1_in_2_simple$price <- as.numeric(as.character(db1_in_2_simple$price))
+db1_not_in_2_simple$price <- as.numeric(as.character(db1_not_in_2_simple$price))
+db2_not_in_1_simple$price <- as.numeric(as.character(db2_not_in_1_simple$price))
+
+temp <- rbind(db1_in_2_simple,db1_not_in_2_simple)
+temp$price  <- as.integer(temp$price)
+
+# Merge datasets
+complete_dataset <- rbind(temp,db2_not_in_1_simple)
+
+# Converts to character, uniform name of values, convert to factor again
+complete_dataset$room_type <- as.character(complete_dataset$room_type)
+complete_dataset$room_type[complete_dataset$room_type == "private_room"] <- "Private room"
+complete_dataset$room_type[complete_dataset$room_type == "entire_home"] <- "Entire home/apt"
+complete_dataset$room_type[complete_dataset$room_type == "shared_room"] <- "Shared room"
+complete_dataset$room_type <- as.factor(complete_dataset$room_type)
+levels(complete_dataset$room_type)
+
+write.table(complete_dataset, "../data/output/listings_airbnb-madrid_insideairbnb-datahippo_merged.csv", sep=",", row.names=FALSE)
 ```
