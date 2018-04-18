@@ -1,0 +1,165 @@
+---
+title: "Comparando bases de datos"
+output: html_document
+---
+
+Este documento generado ([con script de Rmarkdown](https://github.com/montera34/airbnb,madrid.analisis/blob/master/analisis/montera34/comparara-bases.datos.Rmd)) está pensado para comparar dos bases de datos de Airbnb y poder evaluar los métodos de scraping. [Puedes ver el script original](https://github.com/montera34/airbnbeuskadi/blob/master/analisis/montera34/compare-datasets.Rmd)
+
+Más información sobre el taller [Datos de la turistificación en Madrid](https://montera34.com/project/turistificacion-madrid/) del proyecto Efecto Airbnb.
+
+```{r setup, include=FALSE, cache = TRUE, warning=FALSE}
+
+# Instala y carga librerías
+library(tidyverse)
+library(kableExtra)
+library(formattable)
+library(knitr,quietly=T)
+
+# Carga datos
+
+# introduce el path de tu archivo listings. Necesitas desactivar Quotes, porque el texto incluye \"
+listings_simple_1 <- read.delim("../data/insideairbnb_listings_madrid_180117.csv",sep = ",")
+db1 <- "InsideAirbnb"
+listings_simple_2 <- read.delim("../data/datahippo_airbnb_apartments_madrid_180418.csv",sep = ",")
+db2 <- "Datahippo"
+
+listings_simple_2$id <-  sub("airbnb", "", listings_simple_2$id )
+```
+
++ DB1: Los datos de **`r db1`** tienen `r nrow(listings_simple_1)` anuncios en Madrid (data/insideairbnb_listings_madrid_180117.csv).
++ DB2: Los datos de **`r db2`** ctienen `r nrow(listings_simple_2)` anuncios en Madrid (data/datahippo_airbnb_apartments_madrid_180418.csv).
+
+¿Qué anuncios tienen en común? ¿cuáles no?
+
+## Estas son las bases de datos sobre el mapa
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+# loading the required packages
+library(ggmap)
+
+qmplot(longitude, latitude, data = listings_simple_1, maptype = "toner-lite", color = I("red"),alpha = I(.1)) + labs(title= paste("DB1: data set 1. InsideAirbnb.", nrow(listings_simple_1),"anuncios." ))
+
+qmplot(longitude, latitude, data = listings_simple_2, maptype = "toner-lite", color = I("blue"),alpha = I(.1)) + labs(title= paste("DB2: data set 2. DataHippo.", nrow(listings_simple_2),"anuncios." ))
+```
+
+## Comparando datasets
+
+```{r, echo = FALSE, warning=FALSE}
+# de 1 que no están en 2
+db1_not_in_2 <- listings_simple_1[!(listings_simple_1$id %in% listings_simple_2$id),]
+db1_in_2 <- listings_simple_1[listings_simple_1$id %in% listings_simple_2$id,]
+# de 2 que no están en 1
+db2_not_in_1 <- listings_simple_2[!(listings_simple_2$id %in% listings_simple_1$id),]
+db2_in_1 <- listings_simple_2[listings_simple_2$id %in% listings_simple_1$id,]
+```
+
+
+```{r unique_ids, include=FALSE, cache = FALSE}
+unique_listings_1 <- as.data.frame(listings_simple_1$id)
+names(unique_listings_1)<-c("id")
+                         
+unique_listings_2 <- as.data.frame(listings_simple_2$id)
+names(unique_listings_2)<-c("id")
+
+unique_listings_p <- rbind(unique_listings_1, unique_listings_2)
+
+# unique(listings_simple_1$id)
+unique_listings <- as.data.frame(unique(unique_listings_p$id))
+```
+
+**`r db1`** tiene **`r nrow(listings_simple_1)`** anuncios.
+
+**`r db2`** tiene **`r nrow(listings_simple_2)`** anuncios.
+
+A. `r db1` y `r db2` tienen **`r nrow(db1_in_2)`** anuncios comunes.
+
+B. La `r db1` tiene **`r nrow(db1_not_in_2)`** anuncios que no están en la DB2.
+
+C. La `r db2` tiene **`r nrow(db2_not_in_1)`** anuncios que no están en la DB1.
+
+Hay, por tanto **`r nrow(db1_not_in_2) + nrow(db2_not_in_1) + nrow(db2_in_1)` anuncios ** (A + B + C) diferentes en total entre las dos bases de datos. Que concuerda con el valor `r nrow(unique_listings)`, que son el número de valores de id únicos entre DB1 y DB2.
+
+`r db1` tiene **`r format(round(100*(nrow(listings_simple_1)/nrow(unique_listings)), 1))`%** de los anuncios combinados de las dos bases de datos.
+
+`r db2` tiene **`r format(round(100*(nrow(listings_simple_2)/nrow(unique_listings)), 1))`% ** de los anuncios combinados de las dos bases de datos.
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+qmplot(longitude, latitude, data = db1_not_in_2, maptype = "toner-lite", color = I("red"),alpha = I(.2)) + labs(title= "data set 1 anuncios que no están en data set 2" )
+
+qmplot(longitude, latitude, data = db2_not_in_1, maptype = "toner-lite", color = I("blue"),alpha = I(.2)) + labs(title= "data set 2 anuncios que no están en data set 1" )
+```
+
+## Lista de anuncios que no están en las dos bases de datos
+
+### Estos son los anuncios que están en `r db1` pero no en `r db2`:
+
+```{r, echo = FALSE, warning=FALSE}
+# kable(db1_not_in_2[,c(1,5,2)]) #TODO: call name of columns
+
+# formattable(db1_not_in_2[,c(1,5,2)])
+
+qmplot(longitude, latitude, data = db1_not_in_2, maptype = "toner-lite", color = I("blue"),alpha = I(.1),zoom=11) + labs(title= paste("Anuncios que están en DB1 pero no en DB2" ))
+```
+
+### Estos son los anuncios que están en `r db2` pero no en `r db1`:
+
+```{r, echo = FALSE, warning=FALSE}
+# kable(db2_not_in_1[,c(3,10,7)]) #TODO: call name of columns
+
+# formattable(db2_not_in_1[,c(1,5,2)])
+
+qmplot(longitude, latitude, data = db2_not_in_1, maptype = "toner-lite", color = I("blue"),alpha = I(.1),zoom=11) + labs(title= paste("Anuncios que están en DB2 pero no en DB1" ))
+```
+
+
+```{r, echo = FALSE, warning=FALSE}
+### Listado de anuncios que están en DB1 y DB2:
+# formattable(db1_in_2[,c(1,5,2)])
+```
+
+## Datos
+
+### InsideAirbnb
+
++ InsideAirbnb.com de Madrid
+
++ Fecha scraping: 2018-01-17
+
+El subset de datos de Donosti (https://github.com/montera34/airbnbeuskadi/blob/master/data/listings_donostia_simple.csv) se ha realizado con el script de R (https://github.com/montera34/airbnbeuskadi/blob/master/prepare-segmented-files.R) a partir de datos limpiados con openrefine para los nombres de los municipios.
+
+### Datahippo
+
++ Datahippo.org
+
++ Fecha scraping: 2018-04-18
+
+```{r, echo = FALSE, warning=FALSE}
+
+# Merge datasets
+# Select columns that are common in both in the same order
+# db1_in_2_simple <- db1_in_2[,c(1,38,39,49,43,42,11,13)]
+# db1_not_in_2_simple <- db1_not_in_2[,c(1,38,39,49,43,42,11,13)]
+# db2_not_in_1_simple <- db2_not_in_1[,c(3,5,6,8,9,10,14,15)]
+
+# change name of variables in DB2
+# names(db2_not_in_1_simple)<-c("id","latitude","longitude","price","accommodates","room_type","host_id","host_name")
+# 
+# db1_in_2_simple$price <- as.numeric(as.character(db1_in_2_simple$price))
+# db1_not_in_2_simple$price <- as.numeric(as.character(db1_not_in_2_simple$price))
+# db2_not_in_1_simple$price <- as.numeric(as.character(db2_not_in_1_simple$price))
+#   
+#   
+# temp <- rbind(db1_in_2_simple,db1_not_in_2_simple)
+# temp$price  <- as.integer(temp$price)
+# # Merge datasets
+# complete_dataset <- rbind(temp,db2_not_in_1_simple)
+# 
+# # Converts to character, uniform name of values, convert to fator again
+# complete_dataset$room_type <- as.character(complete_dataset$room_type)
+# complete_dataset$room_type[complete_dataset$room_type == "private_room"] <- "Private Room"
+# complete_dataset$room_type[complete_dataset$room_type == "entire_home"] <- "Entire home/apt"
+# complete_dataset$room_type <- as.factor(complete_dataset$room_type)
+# # levels(complete_dataset$room_type)
+# 
+# write.table(complete_dataset, "../../data/listings_madrid_merged.csv", sep=",", row.names=FALSE)
+```
