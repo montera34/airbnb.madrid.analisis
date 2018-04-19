@@ -136,7 +136,7 @@ qmplot(longitude, latitude, data = db2_not_in_1, maptype = "toner-lite", color =
 # Select columns that are common in both in the same order
 db1_in_2_simple <- db1_in_2[,c(1,49,50,61,54,53,20)]
 db1_not_in_2_simple <- db1_not_in_2[,c(1,49,50,61,54,53,20)]
-db2_not_in_1_simple <- db2_not_in_1[,c(1,3,4,13,10,8,7)]
+db2_not_in_1_simple <- db2_not_in_1[,c(1,3,4,13,10,8,7)] #TODO all the variables from datahippo
 
 # change name of variables in DB2
 names(db2_not_in_1_simple)<-c("id","latitude","longitude","price","accommodates","room_type","host_id")
