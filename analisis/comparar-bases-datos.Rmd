@@ -18,9 +18,9 @@ library(knitr,quietly=T)
 # Carga datos
 
 # introduce el path de tu archivo listings. Necesitas desactivar Quotes, porque el texto incluye \"
-listings_simple_1 <- read.delim("../data/insideairbnb_listings_madrid_180117.csv",sep = ",")
+listings_simple_1 <- read.delim("../data/original/insideairbnb_listings_madrid_180117.csv",sep = ",")
 db1 <- "InsideAirbnb"
-listings_simple_2 <- read.delim("../data/datahippo_airbnb_apartments_madrid_180418.csv",sep = ",")
+listings_simple_2 <- read.delim("../data/original/datahippo_airbnb_apartments_madrid_180418.csv",sep = ",")
 db2 <- "Datahippo"
 
 # removes "airbnb" from id
@@ -134,19 +134,34 @@ qmplot(longitude, latitude, data = db2_not_in_1, maptype = "toner-lite", color =
 
 # Merge datasets
 # Select columns that are common in both in the same order
-db1_in_2_simple <- db1_in_2[,c(1,49,50,61,54,53,20)]
-db1_not_in_2_simple <- db1_not_in_2[,c(1,49,50,61,54,53,20)]
-db2_not_in_1_simple <- db2_not_in_1[,c(1,3,4,13,10,8,7)] #TODO all the variables from datahippo
+# db1_in_2_simple <- db1_in_2[,c(1,49,50,61,54,53,20)]
+db1_in_2_simple <- db1_in_2[,c("id","listing_url", "longitude","latitude","host_id","room_type","bedrooms","accommodates","minimum_nights","price","name","medium_url")]
+db1_not_in_2_simple <- db1_not_in_2[,c("id","listing_url", "longitude","latitude","host_id","room_type","bedrooms","accommodates","minimum_nights","price","name","medium_url")]
+db2_not_in_1_simple <- db2_not_in_1[,c(-5,-6,-11)] #TODO all the variables from datahippo
+db1_in_2_simple$source <- db1
+db1_not_in_2_simple$source<- db1
+db2_not_in_1_simple$source <- db2
+
+# test if they have the same variables
+names(db1_not_in_2_simple)
+names(db2_not_in_1_simple)
 
 # change name of variables in DB2
-names(db2_not_in_1_simple)<-c("id","latitude","longitude","price","accommodates","room_type","host_id")
+names(db2_not_in_1_simple)<-c("id","listing_url", "longitude","latitude","host_id","room_type","bedrooms","accommodates","minimum_nights","price","name","medium_url","source")
 
 # removes $ sign from price
 db1_in_2_simple$price <-sub("\\$", "", db1_in_2_simple$price )
+db1_not_in_2_simple$price <-sub("\\$", "", db1_not_in_2_simple$price )
 
+# converts prices to numeric. 
 db1_in_2_simple$price <- as.numeric(as.character(db1_in_2_simple$price))
 db1_not_in_2_simple$price <- as.numeric(as.character(db1_not_in_2_simple$price))
 db2_not_in_1_simple$price <- as.numeric(as.character(db2_not_in_1_simple$price))
+
+# converts to dollars NO NEED: prices already in local currency
+# exchange dollar - euro: 0.80741
+# db1_in_2_simple$price <- db1_in_2_simple$price*0.80741
+# db1_not_in_2_simple$price <- db1_not_in_2_simple$price*0.80741
 
 temp <- rbind(db1_in_2_simple,db1_not_in_2_simple)
 temp$price  <- as.integer(temp$price)
@@ -163,4 +178,4 @@ complete_dataset$room_type <- as.factor(complete_dataset$room_type)
 levels(complete_dataset$room_type)
 
 write.table(complete_dataset, "../data/output/listings_airbnb-madrid_insideairbnb-datahippo_merged.csv", sep=",", row.names=FALSE)
-```
+  ```
