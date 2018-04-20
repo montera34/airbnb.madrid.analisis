@@ -25,6 +25,7 @@ db2 <- "Datahippo"
 
 # removes "airbnb" from id
 listings_simple_2$id <-  sub("airbnb", "", listings_simple_2$id )
+listings_simple_2$host.id <-  sub("airbnb", "", listings_simple_2$host.id )
 ```
 
 + DB1: Los datos de **`r db1`** tienen `r nrow(listings_simple_1)` anuncios en Madrid (data/insideairbnb_listings_madrid_180117.csv).
@@ -134,11 +135,10 @@ qmplot(longitude, latitude, data = db2_not_in_1, maptype = "toner-lite", color =
 
 # Merge datasets
 # Select columns that are common in both in the same order
-# db1_in_2_simple <- db1_in_2[,c(1,49,50,61,54,53,20)]
-db1_in_2_simple <- db1_in_2[,c("id","listing_url", "longitude","latitude","host_id","room_type","bedrooms","accommodates","minimum_nights","price","name","medium_url")]
-db1_not_in_2_simple <- db1_not_in_2[,c("id","listing_url", "longitude","latitude","host_id","room_type","bedrooms","accommodates","minimum_nights","price","name","medium_url")]
+db1_in_2_simple <- db1_in_2[,c("id","listing_url", "longitude","latitude","host_id","room_type","bedrooms","accommodates","minimum_nights","price","name","picture_url")]
+db1_not_in_2_simple <- db1_not_in_2[,c("id","listing_url", "longitude","latitude","host_id","room_type","bedrooms","accommodates","minimum_nights","price","name","picture_url")]
 db2_not_in_1_simple <- db2_not_in_1[,c(-5,-6,-11)] #TODO all the variables from datahippo
-db1_in_2_simple$source <- db1
+db1_in_2_simple$source <- paste(db1,db2,sep = "-")
 db1_not_in_2_simple$source<- db1
 db2_not_in_1_simple$source <- db2
 
@@ -147,7 +147,7 @@ names(db1_not_in_2_simple)
 names(db2_not_in_1_simple)
 
 # change name of variables in DB2
-names(db2_not_in_1_simple)<-c("id","listing_url", "longitude","latitude","host_id","room_type","bedrooms","accommodates","minimum_nights","price","name","medium_url","source")
+names(db2_not_in_1_simple)<-c("id","listing_url", "longitude","latitude","host_id","room_type","bedrooms","accommodates","minimum_nights","price","name","picture_url","source")
 
 # removes $ sign from price
 db1_in_2_simple$price <-sub("\\$", "", db1_in_2_simple$price )
@@ -177,5 +177,5 @@ complete_dataset$room_type[complete_dataset$room_type == "shared_room"] <- "Shar
 complete_dataset$room_type <- as.factor(complete_dataset$room_type)
 levels(complete_dataset$room_type)
 
-write.table(complete_dataset, "../data/output/listings_airbnb-madrid_insideairbnb-datahippo_merged.csv", sep=",", row.names=FALSE)
-  ```
+write.csv(complete_dataset, file = "../data/output/listings_airbnb-madrid_insideairbnb-datahippo_merged.csv")
+```
