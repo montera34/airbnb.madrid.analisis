@@ -1,0 +1,1057 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <style>
+        #map {
+            width: 637px;
+            height: 614px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/barrios_EPSG4326WGS84_0.js"></script>
+        <script src="data/listings_airbnbmadrid_insideairbnbdatahippo_merged_1.js"></script>
+        <script src="data/Turismo_AlberguesalberguesPoint_2.js"></script>
+        <script src="data/Turismo_AlojamientosruralesalojaruralesPoint_3.js"></script>
+        <script src="data/Turismo_PensionescasasdehuspedespensionchPoint_4.js"></script>
+        <script src="data/Turismo_ApartamentostursticosapartturisPoint_5.js"></script>
+        <script src="data/Turismo_CampingcampingPoint_6.js"></script>
+        <script src="data/Turismo_Hostales1estrellahost1Point_7.js"></script>
+        <script src="data/Turismo_Hostales2estrellashost2Point_8.js"></script>
+        <script src="data/Turismo_Hostales3estrellashost3Point_9.js"></script>
+        <script src="data/Turismo_Hoteles1estrellahoteles1Point_10.js"></script>
+        <script src="data/Turismo_Hoteles2estrellashoteles2Point_11.js"></script>
+        <script src="data/Turismo_Hoteles3estrellashoteles3Point_12.js"></script>
+        <script src="data/Turismo_Hoteles4estrellashoteles4Point_13.js"></script>
+        <script src="data/Turismo_Hoteles5estrellashoteles5Point_14.js"></script>
+        <script src="data/Turismo_Pensiones1estrellapension1Point_15.js"></script>
+        <script src="data/Turismo_Pensiones2estrellaspension2Point_16.js"></script>
+        <script src="data/Turismo_Pensiones3estrellaspension3Point_17.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:17, minZoom:10
+        }).fitBounds([[40.347903868,-3.80671482591],[40.5355419045,-3.61202503318]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
+        var bounds_group = new L.featureGroup([]);
+        var basemap0 = L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>,<a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Mapdata: &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+            maxZoom: 17
+        });
+        basemap0.addTo(map);
+        function setBounds() {
+        }
+        function pop_barrios_EPSG4326WGS84_0(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID'] !== null ? Autolinker.link(String(feature.properties['OBJECTID'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NOMDIS'] !== null ? Autolinker.link(String(feature.properties['NOMDIS'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CODBAR'] !== null ? Autolinker.link(String(feature.properties['CODBAR'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CODDISTRIT'] !== null ? Autolinker.link(String(feature.properties['CODDISTRIT'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CODBARRIO'] !== null ? Autolinker.link(String(feature.properties['CODBARRIO'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NOMBRE'] !== null ? Autolinker.link(String(feature.properties['NOMBRE'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape_area'] !== null ? Autolinker.link(String(feature.properties['Shape_area'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape_len'] !== null ? Autolinker.link(String(feature.properties['Shape_len'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_barrios_EPSG4326WGS84_0_0() {
+            return {
+                pane: 'pane_barrios_EPSG4326WGS84_0',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fillOpacity: 0,
+            }
+        }
+        map.createPane('pane_barrios_EPSG4326WGS84_0');
+        map.getPane('pane_barrios_EPSG4326WGS84_0').style.zIndex = 400;
+        map.getPane('pane_barrios_EPSG4326WGS84_0').style['mix-blend-mode'] = 'normal';
+        var layer_barrios_EPSG4326WGS84_0 = new L.geoJson(json_barrios_EPSG4326WGS84_0, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_barrios_EPSG4326WGS84_0',
+            onEachFeature: pop_barrios_EPSG4326WGS84_0,
+            style: style_barrios_EPSG4326WGS84_0_0,
+        });
+        bounds_group.addLayer(layer_barrios_EPSG4326WGS84_0);
+        map.addLayer(layer_barrios_EPSG4326WGS84_0);
+        function pop_listings_airbnbmadrid_insideairbnbdatahippo_merged_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['field_1'] !== null ? Autolinker.link(String(feature.properties['field_1'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id'] !== null ? Autolinker.link(String(feature.properties['id'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['listing_url'] !== null ? Autolinker.link(String(feature.properties['listing_url'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['longitude'] !== null ? Autolinker.link(String(feature.properties['longitude'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['latitude'] !== null ? Autolinker.link(String(feature.properties['latitude'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['host_id'] !== null ? Autolinker.link(String(feature.properties['host_id'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['room_type'] !== null ? Autolinker.link(String(feature.properties['room_type'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['bedrooms'] !== null ? Autolinker.link(String(feature.properties['bedrooms'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['accommodates'] !== null ? Autolinker.link(String(feature.properties['accommodates'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['minimum_nights'] !== null ? Autolinker.link(String(feature.properties['minimum_nights'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['price'] !== null ? Autolinker.link(String(feature.properties['price'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['picture_url'] !== null ? Autolinker.link(String(feature.properties['picture_url'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['source'] !== null ? Autolinker.link(String(feature.properties['source'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_listings_airbnbmadrid_insideairbnbdatahippo_merged_1_0() {
+            return {
+                pane: 'pane_listings_airbnbmadrid_insideairbnbdatahippo_merged_1',
+                radius: 2.0,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(235,74,64,1.0)',
+            }
+        }
+        map.createPane('pane_listings_airbnbmadrid_insideairbnbdatahippo_merged_1');
+        map.getPane('pane_listings_airbnbmadrid_insideairbnbdatahippo_merged_1').style.zIndex = 401;
+        map.getPane('pane_listings_airbnbmadrid_insideairbnbdatahippo_merged_1').style['mix-blend-mode'] = 'normal';
+        var layer_listings_airbnbmadrid_insideairbnbdatahippo_merged_1 = new L.geoJson(json_listings_airbnbmadrid_insideairbnbdatahippo_merged_1, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_listings_airbnbmadrid_insideairbnbdatahippo_merged_1',
+            onEachFeature: pop_listings_airbnbmadrid_insideairbnbdatahippo_merged_1,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_listings_airbnbmadrid_insideairbnbdatahippo_merged_1_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_listings_airbnbmadrid_insideairbnbdatahippo_merged_1);
+        map.addLayer(layer_listings_airbnbmadrid_insideairbnbdatahippo_merged_1);
+        function pop_Turismo_AlberguesalberguesPoint_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NOMBRE'] !== null ? Autolinker.link(String(feature.properties['NOMBRE'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIRECCION'] !== null ? Autolinker.link(String(feature.properties['DIRECCION'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LOCALIDAD'] !== null ? Autolinker.link(String(feature.properties['LOCALIDAD'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CMUN'] !== null ? Autolinker.link(String(feature.properties['CMUN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TELEFONO'] !== null ? Autolinker.link(String(feature.properties['TELEFONO'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_X'] !== null ? Autolinker.link(String(feature.properties['UTM_X'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_Y'] !== null ? Autolinker.link(String(feature.properties['UTM_Y'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Turismo_AlberguesalberguesPoint_2_0() {
+            return {
+                pane: 'pane_Turismo_AlberguesalberguesPoint_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(221,136,172,1.0)',
+            }
+        }
+        map.createPane('pane_Turismo_AlberguesalberguesPoint_2');
+        map.getPane('pane_Turismo_AlberguesalberguesPoint_2').style.zIndex = 402;
+        map.getPane('pane_Turismo_AlberguesalberguesPoint_2').style['mix-blend-mode'] = 'normal';
+        var layer_Turismo_AlberguesalberguesPoint_2 = new L.geoJson(json_Turismo_AlberguesalberguesPoint_2, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Turismo_AlberguesalberguesPoint_2',
+            onEachFeature: pop_Turismo_AlberguesalberguesPoint_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Turismo_AlberguesalberguesPoint_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Turismo_AlberguesalberguesPoint_2);
+        map.addLayer(layer_Turismo_AlberguesalberguesPoint_2);
+        function pop_Turismo_AlojamientosruralesalojaruralesPoint_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_X'] !== null ? Autolinker.link(String(feature.properties['UTM_X'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_Y'] !== null ? Autolinker.link(String(feature.properties['UTM_Y'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CMUN'] !== null ? Autolinker.link(String(feature.properties['CMUN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIRECCION'] !== null ? Autolinker.link(String(feature.properties['DIRECCION'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ETIQUETA'] !== null ? Autolinker.link(String(feature.properties['ETIQUETA'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Turismo_AlojamientosruralesalojaruralesPoint_3_0() {
+            return {
+                pane: 'pane_Turismo_AlojamientosruralesalojaruralesPoint_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,204,204,1.0)',
+            }
+        }
+        map.createPane('pane_Turismo_AlojamientosruralesalojaruralesPoint_3');
+        map.getPane('pane_Turismo_AlojamientosruralesalojaruralesPoint_3').style.zIndex = 403;
+        map.getPane('pane_Turismo_AlojamientosruralesalojaruralesPoint_3').style['mix-blend-mode'] = 'normal';
+        var layer_Turismo_AlojamientosruralesalojaruralesPoint_3 = new L.geoJson(json_Turismo_AlojamientosruralesalojaruralesPoint_3, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Turismo_AlojamientosruralesalojaruralesPoint_3',
+            onEachFeature: pop_Turismo_AlojamientosruralesalojaruralesPoint_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Turismo_AlojamientosruralesalojaruralesPoint_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Turismo_AlojamientosruralesalojaruralesPoint_3);
+        map.addLayer(layer_Turismo_AlojamientosruralesalojaruralesPoint_3);
+        function pop_Turismo_PensionescasasdehuspedespensionchPoint_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TIPO'] !== null ? Autolinker.link(String(feature.properties['TIPO'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DSESTABLE'] !== null ? Autolinker.link(String(feature.properties['DSESTABLE'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CMUN'] !== null ? Autolinker.link(String(feature.properties['CMUN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIRECCION'] !== null ? Autolinker.link(String(feature.properties['DIRECCION'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Turismo_PensionescasasdehuspedespensionchPoint_4_0() {
+            return {
+                pane: 'pane_Turismo_PensionescasasdehuspedespensionchPoint_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(221,221,221,1.0)',
+            }
+        }
+        map.createPane('pane_Turismo_PensionescasasdehuspedespensionchPoint_4');
+        map.getPane('pane_Turismo_PensionescasasdehuspedespensionchPoint_4').style.zIndex = 404;
+        map.getPane('pane_Turismo_PensionescasasdehuspedespensionchPoint_4').style['mix-blend-mode'] = 'normal';
+        var layer_Turismo_PensionescasasdehuspedespensionchPoint_4 = new L.geoJson(json_Turismo_PensionescasasdehuspedespensionchPoint_4, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Turismo_PensionescasasdehuspedespensionchPoint_4',
+            onEachFeature: pop_Turismo_PensionescasasdehuspedespensionchPoint_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Turismo_PensionescasasdehuspedespensionchPoint_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Turismo_PensionescasasdehuspedespensionchPoint_4);
+        map.addLayer(layer_Turismo_PensionescasasdehuspedespensionchPoint_4);
+        function pop_Turismo_ApartamentostursticosapartturisPoint_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_X'] !== null ? Autolinker.link(String(feature.properties['UTM_X'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_Y'] !== null ? Autolinker.link(String(feature.properties['UTM_Y'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CMUN'] !== null ? Autolinker.link(String(feature.properties['CMUN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIRECCION'] !== null ? Autolinker.link(String(feature.properties['DIRECCION'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ETIQUETA'] !== null ? Autolinker.link(String(feature.properties['ETIQUETA'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Turismo_ApartamentostursticosapartturisPoint_5_0() {
+            return {
+                pane: 'pane_Turismo_ApartamentostursticosapartturisPoint_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(234,169,189,1.0)',
+            }
+        }
+        map.createPane('pane_Turismo_ApartamentostursticosapartturisPoint_5');
+        map.getPane('pane_Turismo_ApartamentostursticosapartturisPoint_5').style.zIndex = 405;
+        map.getPane('pane_Turismo_ApartamentostursticosapartturisPoint_5').style['mix-blend-mode'] = 'normal';
+        var layer_Turismo_ApartamentostursticosapartturisPoint_5 = new L.geoJson(json_Turismo_ApartamentostursticosapartturisPoint_5, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Turismo_ApartamentostursticosapartturisPoint_5',
+            onEachFeature: pop_Turismo_ApartamentostursticosapartturisPoint_5,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Turismo_ApartamentostursticosapartturisPoint_5_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Turismo_ApartamentostursticosapartturisPoint_5);
+        map.addLayer(layer_Turismo_ApartamentostursticosapartturisPoint_5);
+        function pop_Turismo_CampingcampingPoint_6(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TIPO'] !== null ? Autolinker.link(String(feature.properties['TIPO'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DSESTABLE'] !== null ? Autolinker.link(String(feature.properties['DSESTABLE'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CMUN'] !== null ? Autolinker.link(String(feature.properties['CMUN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIRECCION'] !== null ? Autolinker.link(String(feature.properties['DIRECCION'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Turismo_CampingcampingPoint_6_0() {
+            return {
+                pane: 'pane_Turismo_CampingcampingPoint_6',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(202,105,157,1.0)',
+            }
+        }
+        map.createPane('pane_Turismo_CampingcampingPoint_6');
+        map.getPane('pane_Turismo_CampingcampingPoint_6').style.zIndex = 406;
+        map.getPane('pane_Turismo_CampingcampingPoint_6').style['mix-blend-mode'] = 'normal';
+        var layer_Turismo_CampingcampingPoint_6 = new L.geoJson(json_Turismo_CampingcampingPoint_6, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Turismo_CampingcampingPoint_6',
+            onEachFeature: pop_Turismo_CampingcampingPoint_6,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Turismo_CampingcampingPoint_6_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Turismo_CampingcampingPoint_6);
+        map.addLayer(layer_Turismo_CampingcampingPoint_6);
+        function pop_Turismo_Hostales1estrellahost1Point_7(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_X'] !== null ? Autolinker.link(String(feature.properties['UTM_X'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_Y'] !== null ? Autolinker.link(String(feature.properties['UTM_Y'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CMUN'] !== null ? Autolinker.link(String(feature.properties['CMUN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIRECCION'] !== null ? Autolinker.link(String(feature.properties['DIRECCION'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ETIQUETA'] !== null ? Autolinker.link(String(feature.properties['ETIQUETA'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Turismo_Hostales1estrellahost1Point_7_0() {
+            return {
+                pane: 'pane_Turismo_Hostales1estrellahost1Point_7',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,122,121,1.0)',
+            }
+        }
+        map.createPane('pane_Turismo_Hostales1estrellahost1Point_7');
+        map.getPane('pane_Turismo_Hostales1estrellahost1Point_7').style.zIndex = 407;
+        map.getPane('pane_Turismo_Hostales1estrellahost1Point_7').style['mix-blend-mode'] = 'normal';
+        var layer_Turismo_Hostales1estrellahost1Point_7 = new L.geoJson(json_Turismo_Hostales1estrellahost1Point_7, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Turismo_Hostales1estrellahost1Point_7',
+            onEachFeature: pop_Turismo_Hostales1estrellahost1Point_7,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Turismo_Hostales1estrellahost1Point_7_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Turismo_Hostales1estrellahost1Point_7);
+        map.addLayer(layer_Turismo_Hostales1estrellahost1Point_7);
+        function pop_Turismo_Hostales2estrellashost2Point_8(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_X'] !== null ? Autolinker.link(String(feature.properties['UTM_X'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_Y'] !== null ? Autolinker.link(String(feature.properties['UTM_Y'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CMUN'] !== null ? Autolinker.link(String(feature.properties['CMUN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIRECCION'] !== null ? Autolinker.link(String(feature.properties['DIRECCION'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ETIQUETA'] !== null ? Autolinker.link(String(feature.properties['ETIQUETA'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Turismo_Hostales2estrellashost2Point_8_0() {
+            return {
+                pane: 'pane_Turismo_Hostales2estrellashost2Point_8',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(16,89,101,1.0)',
+            }
+        }
+        map.createPane('pane_Turismo_Hostales2estrellashost2Point_8');
+        map.getPane('pane_Turismo_Hostales2estrellashost2Point_8').style.zIndex = 408;
+        map.getPane('pane_Turismo_Hostales2estrellashost2Point_8').style['mix-blend-mode'] = 'normal';
+        var layer_Turismo_Hostales2estrellashost2Point_8 = new L.geoJson(json_Turismo_Hostales2estrellashost2Point_8, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Turismo_Hostales2estrellashost2Point_8',
+            onEachFeature: pop_Turismo_Hostales2estrellashost2Point_8,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Turismo_Hostales2estrellashost2Point_8_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Turismo_Hostales2estrellashost2Point_8);
+        map.addLayer(layer_Turismo_Hostales2estrellashost2Point_8);
+        function pop_Turismo_Hostales3estrellashost3Point_9(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_X'] !== null ? Autolinker.link(String(feature.properties['UTM_X'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_Y'] !== null ? Autolinker.link(String(feature.properties['UTM_Y'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CMUN'] !== null ? Autolinker.link(String(feature.properties['CMUN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIRECCION'] !== null ? Autolinker.link(String(feature.properties['DIRECCION'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ETIQUETA'] !== null ? Autolinker.link(String(feature.properties['ETIQUETA'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Turismo_Hostales3estrellashost3Point_9_0() {
+            return {
+                pane: 'pane_Turismo_Hostales3estrellashost3Point_9',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(7,64,80,1.0)',
+            }
+        }
+        map.createPane('pane_Turismo_Hostales3estrellashost3Point_9');
+        map.getPane('pane_Turismo_Hostales3estrellashost3Point_9').style.zIndex = 409;
+        map.getPane('pane_Turismo_Hostales3estrellashost3Point_9').style['mix-blend-mode'] = 'normal';
+        var layer_Turismo_Hostales3estrellashost3Point_9 = new L.geoJson(json_Turismo_Hostales3estrellashost3Point_9, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Turismo_Hostales3estrellashost3Point_9',
+            onEachFeature: pop_Turismo_Hostales3estrellashost3Point_9,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Turismo_Hostales3estrellashost3Point_9_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Turismo_Hostales3estrellashost3Point_9);
+        map.addLayer(layer_Turismo_Hostales3estrellashost3Point_9);
+        function pop_Turismo_Hoteles1estrellahoteles1Point_10(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_X'] !== null ? Autolinker.link(String(feature.properties['UTM_X'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_Y'] !== null ? Autolinker.link(String(feature.properties['UTM_Y'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CMUN'] !== null ? Autolinker.link(String(feature.properties['CMUN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIRECCION'] !== null ? Autolinker.link(String(feature.properties['DIRECCION'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ETIQUETA'] !== null ? Autolinker.link(String(feature.properties['ETIQUETA'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CODIGO2'] !== null ? Autolinker.link(String(feature.properties['CODIGO2'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Turismo_Hoteles1estrellahoteles1Point_10_0() {
+            return {
+                pane: 'pane_Turismo_Hoteles1estrellahoteles1Point_10',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(103,219,165,1.0)',
+            }
+        }
+        map.createPane('pane_Turismo_Hoteles1estrellahoteles1Point_10');
+        map.getPane('pane_Turismo_Hoteles1estrellahoteles1Point_10').style.zIndex = 410;
+        map.getPane('pane_Turismo_Hoteles1estrellahoteles1Point_10').style['mix-blend-mode'] = 'normal';
+        var layer_Turismo_Hoteles1estrellahoteles1Point_10 = new L.geoJson(json_Turismo_Hoteles1estrellahoteles1Point_10, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Turismo_Hoteles1estrellahoteles1Point_10',
+            onEachFeature: pop_Turismo_Hoteles1estrellahoteles1Point_10,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Turismo_Hoteles1estrellahoteles1Point_10_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Turismo_Hoteles1estrellahoteles1Point_10);
+        map.addLayer(layer_Turismo_Hoteles1estrellahoteles1Point_10);
+        function pop_Turismo_Hoteles2estrellashoteles2Point_11(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_X'] !== null ? Autolinker.link(String(feature.properties['UTM_X'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_Y'] !== null ? Autolinker.link(String(feature.properties['UTM_Y'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CMUN'] !== null ? Autolinker.link(String(feature.properties['CMUN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIRECCION'] !== null ? Autolinker.link(String(feature.properties['DIRECCION'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ETIQUETA'] !== null ? Autolinker.link(String(feature.properties['ETIQUETA'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CODIGO2'] !== null ? Autolinker.link(String(feature.properties['CODIGO2'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Turismo_Hoteles2estrellashoteles2Point_11_0() {
+            return {
+                pane: 'pane_Turismo_Hoteles2estrellashoteles2Point_11',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(76,200,163,1.0)',
+            }
+        }
+        map.createPane('pane_Turismo_Hoteles2estrellashoteles2Point_11');
+        map.getPane('pane_Turismo_Hoteles2estrellashoteles2Point_11').style.zIndex = 411;
+        map.getPane('pane_Turismo_Hoteles2estrellashoteles2Point_11').style['mix-blend-mode'] = 'normal';
+        var layer_Turismo_Hoteles2estrellashoteles2Point_11 = new L.geoJson(json_Turismo_Hoteles2estrellashoteles2Point_11, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Turismo_Hoteles2estrellashoteles2Point_11',
+            onEachFeature: pop_Turismo_Hoteles2estrellashoteles2Point_11,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Turismo_Hoteles2estrellashoteles2Point_11_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Turismo_Hoteles2estrellashoteles2Point_11);
+        map.addLayer(layer_Turismo_Hoteles2estrellashoteles2Point_11);
+        function pop_Turismo_Hoteles3estrellashoteles3Point_12(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_X'] !== null ? Autolinker.link(String(feature.properties['UTM_X'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_Y'] !== null ? Autolinker.link(String(feature.properties['UTM_Y'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CMUN'] !== null ? Autolinker.link(String(feature.properties['CMUN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIRECCION'] !== null ? Autolinker.link(String(feature.properties['DIRECCION'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ETIQUETA'] !== null ? Autolinker.link(String(feature.properties['ETIQUETA'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CODIGO2'] !== null ? Autolinker.link(String(feature.properties['CODIGO2'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Turismo_Hoteles3estrellashoteles3Point_12_0() {
+            return {
+                pane: 'pane_Turismo_Hoteles3estrellashoteles3Point_12',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(56,178,163,1.0)',
+            }
+        }
+        map.createPane('pane_Turismo_Hoteles3estrellashoteles3Point_12');
+        map.getPane('pane_Turismo_Hoteles3estrellashoteles3Point_12').style.zIndex = 412;
+        map.getPane('pane_Turismo_Hoteles3estrellashoteles3Point_12').style['mix-blend-mode'] = 'normal';
+        var layer_Turismo_Hoteles3estrellashoteles3Point_12 = new L.geoJson(json_Turismo_Hoteles3estrellashoteles3Point_12, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Turismo_Hoteles3estrellashoteles3Point_12',
+            onEachFeature: pop_Turismo_Hoteles3estrellashoteles3Point_12,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Turismo_Hoteles3estrellashoteles3Point_12_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Turismo_Hoteles3estrellashoteles3Point_12);
+        map.addLayer(layer_Turismo_Hoteles3estrellashoteles3Point_12);
+        function pop_Turismo_Hoteles4estrellashoteles4Point_13(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_X'] !== null ? Autolinker.link(String(feature.properties['UTM_X'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_Y'] !== null ? Autolinker.link(String(feature.properties['UTM_Y'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CMUN'] !== null ? Autolinker.link(String(feature.properties['CMUN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIRECCION'] !== null ? Autolinker.link(String(feature.properties['DIRECCION'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ETIQUETA'] !== null ? Autolinker.link(String(feature.properties['ETIQUETA'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CODIGO2'] !== null ? Autolinker.link(String(feature.properties['CODIGO2'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Turismo_Hoteles4estrellashoteles4Point_13_0() {
+            return {
+                pane: 'pane_Turismo_Hoteles4estrellashoteles4Point_13',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(44,152,160,1.0)',
+            }
+        }
+        map.createPane('pane_Turismo_Hoteles4estrellashoteles4Point_13');
+        map.getPane('pane_Turismo_Hoteles4estrellashoteles4Point_13').style.zIndex = 413;
+        map.getPane('pane_Turismo_Hoteles4estrellashoteles4Point_13').style['mix-blend-mode'] = 'normal';
+        var layer_Turismo_Hoteles4estrellashoteles4Point_13 = new L.geoJson(json_Turismo_Hoteles4estrellashoteles4Point_13, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Turismo_Hoteles4estrellashoteles4Point_13',
+            onEachFeature: pop_Turismo_Hoteles4estrellashoteles4Point_13,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Turismo_Hoteles4estrellashoteles4Point_13_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Turismo_Hoteles4estrellashoteles4Point_13);
+        map.addLayer(layer_Turismo_Hoteles4estrellashoteles4Point_13);
+        function pop_Turismo_Hoteles5estrellashoteles5Point_14(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_X'] !== null ? Autolinker.link(String(feature.properties['UTM_X'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_Y'] !== null ? Autolinker.link(String(feature.properties['UTM_Y'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CMUN'] !== null ? Autolinker.link(String(feature.properties['CMUN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIRECCION'] !== null ? Autolinker.link(String(feature.properties['DIRECCION'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ETIQUETA'] !== null ? Autolinker.link(String(feature.properties['ETIQUETA'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CODIGO2'] !== null ? Autolinker.link(String(feature.properties['CODIGO2'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Turismo_Hoteles5estrellashoteles5Point_14_0() {
+            return {
+                pane: 'pane_Turismo_Hoteles5estrellashoteles5Point_14',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(37,125,152,1.0)',
+            }
+        }
+        map.createPane('pane_Turismo_Hoteles5estrellashoteles5Point_14');
+        map.getPane('pane_Turismo_Hoteles5estrellashoteles5Point_14').style.zIndex = 414;
+        map.getPane('pane_Turismo_Hoteles5estrellashoteles5Point_14').style['mix-blend-mode'] = 'normal';
+        var layer_Turismo_Hoteles5estrellashoteles5Point_14 = new L.geoJson(json_Turismo_Hoteles5estrellashoteles5Point_14, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Turismo_Hoteles5estrellashoteles5Point_14',
+            onEachFeature: pop_Turismo_Hoteles5estrellashoteles5Point_14,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Turismo_Hoteles5estrellashoteles5Point_14_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Turismo_Hoteles5estrellashoteles5Point_14);
+        map.addLayer(layer_Turismo_Hoteles5estrellashoteles5Point_14);
+        function pop_Turismo_Pensiones1estrellapension1Point_15(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CMUN'] !== null ? Autolinker.link(String(feature.properties['CMUN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIRECCION'] !== null ? Autolinker.link(String(feature.properties['DIRECCION'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_X'] !== null ? Autolinker.link(String(feature.properties['UTM_X'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_Y'] !== null ? Autolinker.link(String(feature.properties['UTM_Y'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ETIQUETA'] !== null ? Autolinker.link(String(feature.properties['ETIQUETA'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Turismo_Pensiones1estrellapension1Point_15_0() {
+            return {
+                pane: 'pane_Turismo_Pensiones1estrellapension1Point_15',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(177,77,142,1.0)',
+            }
+        }
+        map.createPane('pane_Turismo_Pensiones1estrellapension1Point_15');
+        map.getPane('pane_Turismo_Pensiones1estrellapension1Point_15').style.zIndex = 415;
+        map.getPane('pane_Turismo_Pensiones1estrellapension1Point_15').style['mix-blend-mode'] = 'normal';
+        var layer_Turismo_Pensiones1estrellapension1Point_15 = new L.geoJson(json_Turismo_Pensiones1estrellapension1Point_15, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Turismo_Pensiones1estrellapension1Point_15',
+            onEachFeature: pop_Turismo_Pensiones1estrellapension1Point_15,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Turismo_Pensiones1estrellapension1Point_15_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Turismo_Pensiones1estrellapension1Point_15);
+        map.addLayer(layer_Turismo_Pensiones1estrellapension1Point_15);
+        function pop_Turismo_Pensiones2estrellaspension2Point_16(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_X'] !== null ? Autolinker.link(String(feature.properties['UTM_X'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_Y'] !== null ? Autolinker.link(String(feature.properties['UTM_Y'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CMUN'] !== null ? Autolinker.link(String(feature.properties['CMUN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIRECCION'] !== null ? Autolinker.link(String(feature.properties['DIRECCION'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ETIQUETA'] !== null ? Autolinker.link(String(feature.properties['ETIQUETA'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Turismo_Pensiones2estrellaspension2Point_16_0() {
+            return {
+                pane: 'pane_Turismo_Pensiones2estrellaspension2Point_16',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(145,53,125,1.0)',
+            }
+        }
+        map.createPane('pane_Turismo_Pensiones2estrellaspension2Point_16');
+        map.getPane('pane_Turismo_Pensiones2estrellaspension2Point_16').style.zIndex = 416;
+        map.getPane('pane_Turismo_Pensiones2estrellaspension2Point_16').style['mix-blend-mode'] = 'normal';
+        var layer_Turismo_Pensiones2estrellaspension2Point_16 = new L.geoJson(json_Turismo_Pensiones2estrellaspension2Point_16, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Turismo_Pensiones2estrellaspension2Point_16',
+            onEachFeature: pop_Turismo_Pensiones2estrellaspension2Point_16,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Turismo_Pensiones2estrellaspension2Point_16_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Turismo_Pensiones2estrellaspension2Point_16);
+        map.addLayer(layer_Turismo_Pensiones2estrellaspension2Point_16);
+        function pop_Turismo_Pensiones3estrellaspension3Point_17(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_X'] !== null ? Autolinker.link(String(feature.properties['UTM_X'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UTM_Y'] !== null ? Autolinker.link(String(feature.properties['UTM_Y'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CMUN'] !== null ? Autolinker.link(String(feature.properties['CMUN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIRECCIN'] !== null ? Autolinker.link(String(feature.properties['DIRECCIN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ETIQUETA'] !== null ? Autolinker.link(String(feature.properties['ETIQUETA'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Turismo_Pensiones3estrellaspension3Point_17_0() {
+            return {
+                pane: 'pane_Turismo_Pensiones3estrellaspension3Point_17',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(108,33,103,1.0)',
+            }
+        }
+        map.createPane('pane_Turismo_Pensiones3estrellaspension3Point_17');
+        map.getPane('pane_Turismo_Pensiones3estrellaspension3Point_17').style.zIndex = 417;
+        map.getPane('pane_Turismo_Pensiones3estrellaspension3Point_17').style['mix-blend-mode'] = 'normal';
+        var layer_Turismo_Pensiones3estrellaspension3Point_17 = new L.geoJson(json_Turismo_Pensiones3estrellaspension3Point_17, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Turismo_Pensiones3estrellaspension3Point_17',
+            onEachFeature: pop_Turismo_Pensiones3estrellaspension3Point_17,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Turismo_Pensiones3estrellaspension3Point_17_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Turismo_Pensiones3estrellaspension3Point_17);
+        map.addLayer(layer_Turismo_Pensiones3estrellaspension3Point_17);
+        setBounds();
+        </script>
+    </body>
+</html>
